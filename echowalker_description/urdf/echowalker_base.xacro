@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find echowalker_description)/urdf/echowalker_inertia.xacro" />
+
+  <!-- Robot Base Parameters -->
+  <xacro:property name="base_length" value="0.4" />
+  <xacro:property name="base_width" value="0.2" />
+  <xacro:property name="base_height" value="0.1" />
+  <xacro:property name="base_mass" value="3.0" />
+
+  <!-- Base Link -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${base_mass}"/>
+      <xacro:box_inertia m="${base_mass}" x="${base_length}" y="${base_width}" z="${base_height}"/>
+    </inertial>
+  </link>
+
+  <!-- Sound Sensor Link -->
+  <link name="sound_sensor">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.01"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.01"/>
+      <xacro:cylinder_inertia m="0.01" r="0.03" h="0.01"/>
+    </inertial>
+  </link>
+
+  <!-- Sound Sensor Joint -->
+  <joint name="base_to_sound_sensor" type="fixed">
+    <parent link="base_link"/>
+    <child link="sound_sensor"/>
+    <origin xyz="${base_length/2 - 0.05} 0 ${base_height/2 + 0.01}" rpy="0 0 0"/>
+  </joint>
+
+</robot>
